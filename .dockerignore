@@ -1,0 +1,12 @@
+!target/*-runner
+!target/*-runner.jar
+!target/lib/*
+!target/quarkus-app/*
+
+
+# Excluye carpetas grandes que no son necesarias en el contexto de la build.
+target/
+.mvn/
+.git/
+.idea/
+.vscode/
