@@ -1,62 +1,118 @@
-# prueba-tecnica
+# 🏦 Proyecto Prueba Técnica - IESS
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Proyecto backend desarrollado con **Java 21** y **Quarkus**, conectado a una base de datos **Oracle XE** mediante **Docker Compose**.  
+El sistema implementa entidades como *Cliente*, *Cuenta* y *Movimiento*, aplicando reglas de negocio financieras básicas.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+---
 
-## Running the application in dev mode
+## ⚙️ **Arquitectura del Proyecto**
 
-You can run your application in dev mode that enables live coding using:
+El entorno está completamente dockerizado:
 
-```shell script
-./mvnw quarkus:dev
-```
++----------------------+ +--------------------+
+| Quarkus Backend | <-----> | Oracle XE DB |
+| Java 21 + Swagger | | Usuario IESS_USER|
++----------------------+ +--------------------+
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
 
-## Packaging and running the application
+- **Backend:** Quarkus + RESTEasy + Panache (JPA)
+- **Base de datos:** Oracle XE (Docker)
+- **Build:** Maven
+- **Documentación API:** Swagger UI
 
-The application can be packaged using:
+---
 
-```shell script
-./mvnw package
-```
+## 🚀 **Ejecución Rápida con Docker**
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+1️⃣ **Clonar el repositorio**
+```bash
+git clone https://github.com/diegolopez/prueba-tecnica-iess.git
+cd prueba-tecnica-iess
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+2️⃣ Levantar los servicios
+docker-compose up --build
 
-If you want to build an _über-jar_, execute the following command:
+Esto descargará y ejecutará:
 
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
+Oracle XE 21c
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+El backend Quarkus (API REST)
 
-## Creating a native executable
+🔹 Durante la primera ejecución, Docker creará automáticamente:
 
-You can create a native executable using:
+El usuario IESS_USER con contraseña IESS123
 
-```shell script
-./mvnw package -Dnative
-```
+Las tablas cliente, cuenta y movimiento
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+🌐 Acceso a la aplicación
+Recurso	URL
+API Swagger UI	http://localhost:8085/q/swagger-ui
 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
+Oracle DB (SQL Developer)	localhost:1521/XEPDB1
 
-You can then execute your native executable with: `./target/prueba-tecnica-1.0.0-runner`
+Credenciales base de datos:
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
+Usuario: IESS_USER
+Contraseña: IESS123
 
-## Provided Code
+📚 Estructura del proyecto
 
-### REST
+prueba-tecnica/
+│
+├── db/                        # Scripts SQL de inicialización
+│   ├── init-user.sql
+│   └── init-tables.sql
+│
+├── src/
+│   ├── main/java/org/iess/    # Código fuente del backend
+│   ├── main/resources/         # Configuración de Quarkus
+│   └── test/java/org/iess/     # Pruebas unitarias
+│
+├── pom.xml                    # Dependencias Maven
+├── Dockerfile                 # Imagen de aplicación
+├── docker-compose.yml         # Orquestación de servicios
+└── README.md
 
-Easily start your REST Web Services
+🧠 Reglas de negocio implementadas
 
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+Los valores de tipo crédito son positivos.
+
+Los valores de tipo débito son negativos.
+
+Cada movimiento actualiza automáticamente el saldo disponible.
+
+Si el saldo es 0 y se intenta un débito, se lanza la excepción:
+
+Saldo no disponible
+
+🧰 Tecnologías Utilizadas
+
+☕ Java 21
+
+🧩 Quarkus Framework
+
+🐘 Oracle Database XE 21c
+
+🧱 JPA / Hibernate / Panache
+
+🐋 Docker y Docker Compose
+
+📘 Swagger UI (OpenAPI 3)
+
+🧪 JUnit 5
+
+🧑‍💻 Ejecución manual (sin Docker)
+
+mvn quarkus:dev
+
+API disponible en:
+👉 http://localhost:8085/q/swagger-ui
+
+👤 Autor
+
+Diego López
+💼 Analista informático
+📧 contacto: diego.lopezo@iess.gob.ec
+
+
+
