@@ -11,13 +11,12 @@ services:
       - ./db/init-iess-user.sql:/docker-entrypoint-initdb.d/init-iess-user.sql
     networks:
       - iess-net
-
     healthcheck:
-      test: [ "CMD-SHELL", "sqlplus -L sys/admin123@XEPDB1 AS SYSDBA <<< 'select 1 from dual;'" ]
-      interval: 10s
-      timeout: 5s
-      retries: 20  # Aumenta los reintentos para dar más tiempo
-      start_period: 120s # Espera hasta 2 minutos antes de empezar a chequear
+      test: ["CMD-SHELL", "echo 'SELECT 1 FROM dual;' | sqlplus -s system/admin123@//localhost:1521/XEPDB1 | grep -q 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 30
+      start_period: 120s
 
   quarkus-app:
     build:
@@ -27,15 +26,11 @@ services:
     ports:
       - "8085:8085"
     networks:
-          - iess-net
-
+      - iess-net
     depends_on:
       oracle-xe:
-        condition: service_healthy # Espera a que Oracle esté 'healthy'
+        condition: service_healthy
 
 networks:
   iess-net:
     driver: bridge
-
-
-
